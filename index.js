@@ -5,7 +5,9 @@ const store = {
     { id: cuid(), name: 'milk', checked: true },
     { id: cuid(), name: 'bread', checked: false }
   ],
-  hideCheckedItems: false
+  hideCheckedItems: false,
+  renameButtonClicked: false,
+  itemTitleChanged: false,
 };
 
 const generateItemElement = function (item) {
@@ -23,6 +25,9 @@ const generateItemElement = function (item) {
         <button class='shopping-item-toggle js-item-toggle'>
           <span class='button-label'>check</span>
         </button>
+        <button class='shopping-item-change js-item-title-change'>
+          <span class='button-label'>rename</span>
+        </button>  
         <button class='shopping-item-delete js-item-delete'>
           <span class='button-label'>delete</span>
         </button>
@@ -49,6 +54,10 @@ const render = function () {
   // property of false are included.
   if (store.hideCheckedItems) {
     items = items.filter(item => !item.checked);
+  }
+
+  if (store.renameButtonClicked) {
+    items = items 
   }
 
   /**
@@ -145,6 +154,20 @@ const handleToggleFilterClick = function () {
   });
 };
 
+const toggleChangesItemTitleFilter = function () {
+  store.renameButtonClicked = !store.renameButtonClicked
+};
+
+
+
+const handleRenameItemClick = function () {
+  $('.js-item-title-change').click(() => {
+    toggleChangesItemTitleFilter();
+    render();
+  })
+  
+};
+
 /**
  * This function will be our callback when the
  * page loads. It is responsible for initially 
@@ -160,6 +183,7 @@ const handleShoppingList = function () {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleToggleFilterClick();
+  handleRenameItemClick();
 };
 
 // when the page loads, call `handleShoppingList`
